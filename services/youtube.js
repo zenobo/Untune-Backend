@@ -1,7 +1,7 @@
 var {google} = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 
-var Utility = require('./Utility')
+var Utility = require('./utility')
 
 const Youtube = {
   createPlaylist: (service, subreddit) => {
