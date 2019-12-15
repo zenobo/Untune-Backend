@@ -1,4 +1,4 @@
-var Subreddits = {
+var Constants = {
   list: function(){
     return [
       {name: 'music'},
@@ -13,7 +13,10 @@ var Subreddits = {
       {name: 'funkhouse'},
       {name: 'house'}
     ];
+  },
+  maxSubreddits: function(){
+    return 18;
   }
 }
 
-module.exports = Subreddits;
+module.exports = Constants;

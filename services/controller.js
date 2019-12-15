@@ -1,4 +1,5 @@
 const Youtube = require('./youtube')
+const Constants = require('../data/constants')
 
 var Controller = {
   insertPlaylistItems: function(service, playlist_id, posts){
@@ -7,7 +8,7 @@ var Controller = {
           posts.map((post, i)=>{
             setTimeout(async ()=>{
               // Insert posts into playlist as videos
-              if(i>18) return;
+              if(i>Constants.maxSubreddits()) return;
               await Youtube.insertPlaylistItem(service, playlist_id, post.youtubeId);
             }, 1000*i);
           });

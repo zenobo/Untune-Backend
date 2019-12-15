@@ -1,5 +1,5 @@
 const axios = require('axios')
-const Subreddits = require('../data/subreddits')
+const Constants = require('../data/constants')
 
 const Reddit = {
   loadPosts: async (subreddit) => {
@@ -30,7 +30,7 @@ const Reddit = {
     return entries;
   },
   getSubreddits: function(){
-    return Subreddits.list();
+    return Constants.list();
   }
 };
 
