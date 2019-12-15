@@ -8,7 +8,7 @@ const TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH || process.env.USERP
 const TOKEN_PATH = TOKEN_DIR + 'untune-credentials2.json';
 
 const Auth = {
-  startAuthorize: (res, callback) => {
+  startAuthorize: (res, callback, redisClient) => {
     res.send('Updating')
     // Load client secrets from a local file.
     fs.readFile('client_secret.json', function processClientSecrets(err, content) {
@@ -17,26 +17,26 @@ const Auth = {
         return;
       }
       // Authorize a client with the loaded credentials, then call the YouTube API.
-      Auth.authorize(JSON.parse(content), callback);
+      Auth.authorize(JSON.parse(content), callback, redisClient);
     });
   },
-  authorize: (credentials, callback) => {
+  authorize: (credentials, callback, redisClient) => {
     var clientSecret = credentials.installed.client_secret;
     var clientId = credentials.installed.client_id;
     var redirectUrl = credentials.installed.redirect_uris[0];
     var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
 
     // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH, function(err, token) {
-      if (err) {
-        Auth.getNewToken(oauth2Client, callback);
-      } else {
-        oauth2Client.credentials = JSON.parse(token);
+    redisClient.getClient().get('youtube_token', function (error, result) {
+      if (error || result == null) {
+        Auth.getNewToken(oauth2Client, callback, redisClient);
+      }else{
+        oauth2Client.credentials = JSON.parse(result);
         callback(oauth2Client);
       }
     });
   },
-  getNewToken: (oauth2Client, callback) => {
+  getNewToken: (oauth2Client, callback, redisClient) => {
     var authUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: SCOPES
@@ -54,23 +54,15 @@ const Auth = {
           return;
         }
         oauth2Client.credentials = token;
-        Auth.storeToken(token);
+        Auth.storeToken(token, redisClient);
         callback(oauth2Client);
       });
     });
   },
-  storeToken: (token) => {
-    try {
-      fs.mkdirSync(TOKEN_DIR);
-    } catch (err) {
-      if (err.code != 'EEXIST') {
-        throw err;
-      }
-    }
-    fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-      if (err) throw err;
-      console.log('Token stored to ' + TOKEN_PATH);
-    });
+  storeToken: (token, redisClient) => {
+    redisClient.getClient().set(
+      'youtube_token', JSON.stringify(token)
+    )
   }
 };
 

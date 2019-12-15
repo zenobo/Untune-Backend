@@ -55,7 +55,7 @@ const app = express()
 const port = 3000
 
 // Update playlists
-app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists))
+app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists, redisClient))
 
 // GET endpointts
 app.get('/subreddit', (req, res) => Routes.reddit(res, req, redisClient))
