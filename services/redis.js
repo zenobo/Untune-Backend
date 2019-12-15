@@ -3,7 +3,7 @@ var client;
 
 class Redis{
   constructor(){
-    client = redis.createClient(6385, process.env.REDIS_HOST);
+    client = redis.createClient(process.env.REDIS_POST, process.env.REDIS_HOST);
     client.on('connect', function() {
       console.log('Redis client connected');
     });
