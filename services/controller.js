@@ -22,19 +22,6 @@ var Controller = {
         posts: posts
       })
     )
-  },
-  getYoutubeToken: function(redisClient){
-    return new Promise(
-        async function (resolve, reject) {
-          redisClient.getClient().get('youtube_token', function (error, result) {
-            if (error) {
-                console.log(error);
-                resolve({status: 'error', message: error})
-            }
-            resolve(result)
-          });
-        }
-    );
   }
 }
 
