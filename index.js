@@ -55,10 +55,10 @@ async function createPlaylists(auth) {
 }
 
 // Routes
-const app = express()   
+const app = express()
 const port = process.env.PORT || 3000
 app.use(bodyParser.json())
-app.use(cors())
+app.options('*', cors())
 
 // Update playlists
 app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists, redisClient, oAuthClient))
