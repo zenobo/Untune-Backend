@@ -19,6 +19,9 @@ var Constants = {
   },
   cors: function(){
     return '*';
+  },
+  playlistDelay: function(index){
+    return 10000*index;
   }
 }
 

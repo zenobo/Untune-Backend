@@ -50,7 +50,7 @@ async function createPlaylists(auth) {
       // Save posts and playlist URL in memory
       Controller.setCache(posts, playlist_id, redisClient, subreddit.name)
 
-    }, 10000*index)
+    }, Constants.playlistDelay(index))
   })
 
 }
