@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const Routes = require('./routes/routes')
+const Constants = require('./data/constants')
 
 const Auth = require('./services/auth')
 const OAuth = require('./services/oauth')
@@ -49,7 +50,7 @@ async function createPlaylists(auth) {
       // Save posts and playlist URL in memory
       Controller.setCache(posts, playlist_id, redisClient, subreddit.name)
 
-    }, 10000*index)
+    }, Constants.playlistDelay(index))
   })
 
 }
@@ -59,7 +60,7 @@ const app = express()
 const port = process.env.PORT || 3000
 app.use(bodyParser.json())
 app.use(cors());
-app.options('*', cors());
+app.options(Constants.cors(), cors());
 
 // Update playlists
 app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists, redisClient, oAuthClient))

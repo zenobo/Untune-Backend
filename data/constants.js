@@ -15,7 +15,13 @@ var Constants = {
     ];
   },
   maxSubreddits: function(){
-    return 18;
+    return 15;
+  },
+  cors: function(){
+    return '*';
+  },
+  playlistDelay: function(index){
+    return 10000*index;
   }
 }
 
