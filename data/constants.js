@@ -16,6 +16,9 @@ var Constants = {
   },
   maxSubreddits: function(){
     return 18;
+  },
+  cors: function(){
+    return '*';
   }
 }
 
