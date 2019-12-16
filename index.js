@@ -44,11 +44,11 @@ async function createPlaylists(auth) {
       // Load reddit posts
       posts = await Reddit.loadPosts(subreddit.name);
 
-      // Map reddit posts
-      await Controller.insertPlaylistItems(service, playlist_id, posts);
-
       // Save posts and playlist URL in memory
       Controller.setCache(posts, playlist_id, redisClient, subreddit.name)
+
+      // Map reddit posts
+      await Controller.insertPlaylistItems(service, playlist_id, posts);
 
     }, Constants.playlistDelay(index))
   })
