@@ -2,16 +2,19 @@ require('dotenv').config()
 
 const {google} = require('googleapis');
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const Routes = require('./routes/routes')
 
 const Auth = require('./services/auth')
+const OAuth = require('./services/oauth')
 const Reddit = require('./services/reddit')
 const Youtube = require('./services/youtube')
 const Controller = require('./services/controller')
 const Redis = require('./services/redis')
 
 var redisClient = new Redis()
+var oAuthClient = new OAuth()
 
 /**
 @param auth - oauth2 client returned after generating youtube api credentials
@@ -53,12 +56,16 @@ async function createPlaylists(auth) {
 // Routes
 const app = express()
 const port = process.env.PORT || 3000
+app.use(bodyParser.json())
 
 // Update playlists
-app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists, redisClient))
+app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists, redisClient, oAuthClient))
 
-// GET endpointts
+// GET endpoints
 app.get('/subreddit', (req, res) => Routes.reddit(res, req, redisClient))
+app.get('/getAuthUrl', (req, res) => Routes.getAuthUrl(res, req, oAuthClient))
 
+// POST endpoints
+app.post('/setToken', (req, res) => Routes.setToken(res, req, redisClient, oAuthClient))
 
 app.listen(port, () => console.log(`Express on port ${port}!`))
