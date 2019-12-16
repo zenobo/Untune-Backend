@@ -3,6 +3,7 @@ require('dotenv').config()
 const {google} = require('googleapis');
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const Routes = require('./routes/routes')
 
@@ -54,9 +55,10 @@ async function createPlaylists(auth) {
 }
 
 // Routes
-const app = express()
+const app = express()   
 const port = process.env.PORT || 3000
 app.use(bodyParser.json())
+app.use(cors())
 
 // Update playlists
 app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists, redisClient, oAuthClient))
