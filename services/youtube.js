@@ -17,7 +17,7 @@ const Youtube = {
                 defaultLanguage: "en_US"
               },
               status: {
-                privacyStatus: "private"
+                privacyStatus: "public"
               }
             },
             part: "snippet,status"
