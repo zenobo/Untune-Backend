@@ -16,11 +16,11 @@ const Auth = {
     // Check if we have previously stored a token.
     redisClient.getClient().get('youtube_token', (error, result) => {
       if (error || result == null) {
-        res.send(Auth.getAuthUrl(oAuthClient))
+        res.send(Auth.getAuthUrl(oAuthClient));
       }else{
         oAuthClient.credentials = JSON.parse(result);
         Tasks.createPlaylists(oAuthClient, redisClient);
-        res.send('Updating')
+        res.send('Updating');
       }
     });
   },
@@ -60,7 +60,7 @@ const Auth = {
     redisClient.getClient().set(
       'youtube_token', JSON.stringify(token)
     )
-    console.log('Token has been set')
+    console.log('Token has been set');
   }
 };
 

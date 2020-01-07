@@ -1,4 +1,4 @@
-const Auth = require('../services/auth')
+const Auth = require('../services/auth');
 
 const Routes = {
   reddit: (res, req, redisClient, oAuthClient) => {
@@ -6,9 +6,9 @@ const Routes = {
     redisClient.getClient().get(req.query.name, (error, result) => {
       if (error) {
           console.log(error);
-          res.send({status: 'error'})
+          res.send({status: 'error'});
       }
-      res.send({status: 'success', data: JSON.parse(result)})
+      res.send({status: 'success', data: JSON.parse(result)});
     });
   },
   getAuthUrl: (res, req, oAuthClient) => {
@@ -18,7 +18,7 @@ const Routes = {
       return;
     }
     // return the url for user to connect youtube
-    res.send({status: 'success', data: Auth.getAuthUrl(oAuthClient)})
+    res.send({status: 'success', data: Auth.getAuthUrl(oAuthClient)});
   },
   setToken: (res, req, redisClient, oAuthClient) => {
     // protected
@@ -30,7 +30,7 @@ const Routes = {
     // set the oauth code aftering connecting youtube
     let code = req.body.code;
     Auth.setToken(code, redisClient, oAuthClient);
-    res.send({status: 'success', message: 'Auth token set if valid'})
+    res.send({status: 'success', message: 'Auth token set if valid'});
   }
 }
 
