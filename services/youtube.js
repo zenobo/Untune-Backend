@@ -1,12 +1,17 @@
-var {google} = require('googleapis');
-var OAuth2 = google.auth.OAuth2;
+const {google} = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
 
-var Utility = require('./utility')
+const Utility = require('./utility')
 
 const Youtube = {
+  /**
+  Create a playlist on the linked youtube account
+  @param service - youtube service API
+  @param subReddit - subreddit to use in youtube title and description
+  **/
   createPlaylist: (service, subreddit) => {
     return new Promise(
-        function (resolve, reject) {
+        (resolve, reject) => {
           console.log(`creating r/${subreddit}`)
           service.playlists.insert({
             resource: {
@@ -21,7 +26,7 @@ const Youtube = {
               }
             },
             part: "snippet,status"
-          }, function(err, response) {
+          }, (err, response) => {
             if(err) console.log(err)
             resolve(response.data.id);
           })
@@ -29,9 +34,15 @@ const Youtube = {
         }
     );
   },
+  /**
+  Add a video to a playlist
+  @param service - youtube service API
+  @param playlist_id - youtube playlist id
+  @param video_id - youtube video id
+  **/
   insertPlaylistItem: (service, playlist_id, video_id) => {
     return new Promise(
-        function (resolve, reject) {
+        (resolve, reject) => {
           service.playlistItems.insert({
             resource: {
               snippet: {
@@ -43,7 +54,7 @@ const Youtube = {
               }
             },
             part: "snippet"
-          }, function(err, response) {
+          }, (err, response) => {
             if(err) console.log(err)
             resolve(true);
           })

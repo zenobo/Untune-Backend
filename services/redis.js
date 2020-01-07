@@ -1,5 +1,5 @@
-var redis = require('redis');
-var client;
+const redis = require('redis');
+let client;
 
 class Redis{
   constructor(){
@@ -8,14 +8,17 @@ class Redis{
       port: process.env.REDIS_PORT,
       password: process.env.REDIS_PASS
     });
-    client.on('connect', function() {
+    client.on('connect', () => {
       console.log('Redis client connected');
     });
 
-    client.on('error', function (err) {
+    client.on('error', (err) => {
       console.log('Something went wrong ' + err);
     });
   }
+  /**
+  Return a client to be used for connections
+  **/
   getClient(){
     return client;
   }

@@ -1,9 +1,9 @@
 const Auth = require('../services/auth')
 
-var Routes = {
-  reddit: function(res, req, redisClient, oAuthClient){
+const Routes = {
+  reddit: (res, req, redisClient, oAuthClient) => {
     // get posts for a specified subreddit
-    redisClient.getClient().get(req.query.name, function (error, result) {
+    redisClient.getClient().get(req.query.name, (error, result) => {
       if (error) {
           console.log(error);
           res.send({status: 'error'})
@@ -11,7 +11,7 @@ var Routes = {
       res.send({status: 'success', data: JSON.parse(result)})
     });
   },
-  getAuthUrl: function(res, req, oAuthClient){
+  getAuthUrl: (res, req, oAuthClient) => {
     // protected
     if(req.query.key != process.env.PROTECTED){
       res.status(404).json({ status: 'failed' });
@@ -20,7 +20,7 @@ var Routes = {
     // return the url for user to connect youtube
     res.send({status: 'success', data: Auth.getAuthUrl(oAuthClient)})
   },
-  setToken: function(res, req, redisClient, oAuthClient){
+  setToken: (res, req, redisClient, oAuthClient) => {
     // protected
     if(req.body.key != process.env.PROTECTED){
       res.send({status: 'failed'});
