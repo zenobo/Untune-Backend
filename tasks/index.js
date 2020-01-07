@@ -1,6 +1,6 @@
 const Reddit = require('../services/reddit')
 const {google} = require('googleapis');
-const Constants = require('../data/constants')
+const { PLAYLIST_DELAY } = require('../data/constants')
 const Youtube = require('../services/youtube')
 const Controller = require('../services/controller')
 
@@ -10,18 +10,18 @@ const Tasks = {
   @param auth - oauth for youtube
   @param redisClient - client for redis connection
   **/
-  createPlaylists: async function(auth, redisClient) {
-    var playlist_id;
-    var posts;
+  createPlaylists: async (auth, redisClient) => {
+    let playlist_id;
+    let posts;
 
     // Create youtube service
-    var service = google.youtube({
+    const service = google.youtube({
       version: 'v3',
       auth: auth
     });
 
     // Get list of subreddits
-    var subreddits = Reddit.getSubreddits();
+    const subreddits = Reddit.getSubreddits();
 
     // Map subreddits
     subreddits.map((subreddit, index)=>{
@@ -40,7 +40,7 @@ const Tasks = {
         // Map reddit posts
         await Controller.insertPlaylistItems(service, playlist_id, posts);
 
-      }, Constants.playlistDelay(index))
+      }, PLAYLIST_DELAY*index)
     })
 
   }

@@ -1,6 +1,6 @@
-var fs = require('fs');
-var readline = require('readline');
-var {google} = require('googleapis');
+const fs = require('fs');
+const readline = require('readline');
+const {google} = require('googleapis');
 const Tasks = require('../tasks')
 
 const SCOPES = ['https://www.googleapis.com/auth/youtube'];
@@ -14,7 +14,7 @@ const Auth = {
   **/
   startAuthorize: (res, redisClient, oAuthClient) => {
     // Check if we have previously stored a token.
-    redisClient.getClient().get('youtube_token', function (error, result) {
+    redisClient.getClient().get('youtube_token', (error, result) => {
       if (error || result == null) {
         res.send(Auth.getAuthUrl(oAuthClient))
       }else{
@@ -28,8 +28,8 @@ const Auth = {
   Get a URL that the user needs to authorize
   @param oAuthClient
   **/
-  getAuthUrl: function(oAuthClient){
-    var authUrl = oAuthClient.generateAuthUrl({
+  getAuthUrl: (oAuthClient) => {
+    const authUrl = oAuthClient.generateAuthUrl({
       access_type: 'offline',
       scope: SCOPES
     });
@@ -41,8 +41,8 @@ const Auth = {
   @param redisClient
   @param oAuthClient
   **/
-  setToken: function(code, redisClient, oAuthClient){
-    oAuthClient.getToken(code, function(err, token) {
+  setToken: (code, redisClient, oAuthClient) => {
+    oAuthClient.getToken(code, (err, token) => {
       if (err) {
         console.log('Error while trying to retrieve access token', err);
         return;
