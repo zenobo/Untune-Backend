@@ -16,6 +16,9 @@ class Redis{
       console.log('Something went wrong ' + err);
     });
   }
+  /**
+  Return a client to be used for connections
+  **/
   getClient(){
     return client;
   }

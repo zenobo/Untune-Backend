@@ -4,6 +4,11 @@ var OAuth2 = google.auth.OAuth2;
 var Utility = require('./utility')
 
 const Youtube = {
+  /**
+  Create a playlist on the linked youtube account
+  @param service - youtube service API
+  @param subReddit - subreddit to use in youtube title and description
+  **/
   createPlaylist: (service, subreddit) => {
     return new Promise(
         function (resolve, reject) {
@@ -29,6 +34,12 @@ const Youtube = {
         }
     );
   },
+  /**
+  Add a video to a playlist
+  @param service - youtube service API
+  @param playlist_id - youtube playlist id
+  @param video_id - youtube video id
+  **/
   insertPlaylistItem: (service, playlist_id, video_id) => {
     return new Promise(
         function (resolve, reject) {

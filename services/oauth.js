@@ -15,6 +15,9 @@ class OAuth{
     client = oauth2Client;
     return client;
   }
+  /**
+  Return client to be used for oauth
+  **/
   getClient(){
     return client;
   }

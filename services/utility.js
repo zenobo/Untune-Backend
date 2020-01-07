@@ -1,4 +1,7 @@
 var Utility = {
+  /**
+  Generate a date in mm/dd/yyyy format
+  **/
   getDate: function(){
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');

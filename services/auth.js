@@ -1,22 +1,33 @@
 var fs = require('fs');
 var readline = require('readline');
 var {google} = require('googleapis');
+const Tasks = require('../tasks')
 
 const SCOPES = ['https://www.googleapis.com/auth/youtube'];
 
 const Auth = {
-  startAuthorize: (res, callback, redisClient, oAuthClient) => {
-    res.send('Updating')
+  /**
+  Begin the auth and playlist creation process
+  @param red
+  @param redisClient
+  @param oAuthClient
+  **/
+  startAuthorize: (res, redisClient, oAuthClient) => {
     // Check if we have previously stored a token.
     redisClient.getClient().get('youtube_token', function (error, result) {
       if (error || result == null) {
         res.send(Auth.getAuthUrl(oAuthClient))
       }else{
         oAuthClient.credentials = JSON.parse(result);
-        callback(oAuthClient);
+        Tasks.createPlaylists(oAuthClient, redisClient);
+        res.send('Updating')
       }
     });
   },
+  /**
+  Get a URL that the user needs to authorize
+  @param oAuthClient
+  **/
   getAuthUrl: function(oAuthClient){
     var authUrl = oAuthClient.generateAuthUrl({
       access_type: 'offline',
@@ -24,6 +35,12 @@ const Auth = {
     });
     return authUrl;
   },
+  /**
+  Process and store a token
+  @param code - auth code provided by the user
+  @param redisClient
+  @param oAuthClient
+  **/
   setToken: function(code, redisClient, oAuthClient){
     oAuthClient.getToken(code, function(err, token) {
       if (err) {
@@ -34,6 +51,11 @@ const Auth = {
       Auth.storeToken(token, redisClient);
     });
   },
+  /**
+  Add an entry for a new playlist that was created
+  @param token - a token to store
+  @param redisClient
+  **/
   storeToken: (token, redisClient) => {
     redisClient.getClient().set(
       'youtube_token', JSON.stringify(token)

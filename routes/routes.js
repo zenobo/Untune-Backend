@@ -23,6 +23,7 @@ var Routes = {
   setToken: function(res, req, redisClient, oAuthClient){
     // protected
     if(req.body.key != process.env.PROTECTED){
+      console.log(req.body.key, process.env.PROTECTED)
       res.send({status: 'failed'});
       return;
     }

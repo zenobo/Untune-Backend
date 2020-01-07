@@ -1,75 +1,38 @@
 require('dotenv').config()
-
-const {google} = require('googleapis');
+// Modules
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+// Components
 const Routes = require('./routes/routes')
 const Constants = require('./data/constants')
-
 const Auth = require('./services/auth')
 const OAuth = require('./services/oauth')
-const Reddit = require('./services/reddit')
-const Youtube = require('./services/youtube')
-const Controller = require('./services/controller')
 const Redis = require('./services/redis')
 
+// Clients
 var redisClient = new Redis()
 var oAuthClient = new OAuth()
-
-/**
-@param auth - oauth2 client returned after generating youtube api credentials
-**/
-async function createPlaylists(auth) {
-  var playlist_id;
-  var posts;
-
-  // Create youtube service
-  var service = google.youtube({
-    version: 'v3',
-    auth: auth
-  });
-
-  // Get list of subreddits
-  var subreddits = Reddit.getSubreddits();
-
-  // Map subreddits
-  subreddits.map((subreddit, index)=>{
-    setTimeout(async ()=>{
-
-      // Create playlist
-      playlist_id = await Youtube.createPlaylist(service, subreddit.name);
-
-      // Load reddit posts
-      posts = await Reddit.loadPosts(subreddit.name);
-
-      // Save posts and playlist URL in memory
-      Controller.setCache(posts, playlist_id, redisClient, subreddit.name)
-
-      // Map reddit posts
-      await Controller.insertPlaylistItems(service, playlist_id, posts);
-
-    }, Constants.playlistDelay(index))
-  })
-
-}
 
 // Routes
 const app = express()
 const port = process.env.PORT || 3000
+
+// Express
 app.use(bodyParser.json())
 app.use(cors());
 app.options(Constants.cors(), cors());
 
-// Update playlists
-app.get('/update', (req, res) => Auth.startAuthorize(res, createPlaylists, redisClient, oAuthClient))
+// Routes
 
+// Update playlists
+app.get('/update', (req, res) => Auth.startAuthorize(res, redisClient, oAuthClient))
 // GET endpoints
 app.get('/subreddit', (req, res) => Routes.reddit(res, req, redisClient))
 app.get('/getAuthUrl', (req, res) => Routes.getAuthUrl(res, req, oAuthClient))
-
 // POST endpoints
 app.post('/setToken', (req, res) => Routes.setToken(res, req, redisClient, oAuthClient))
 
+// Server
 app.listen(port, () => console.log(`Express on port ${port}!`))
