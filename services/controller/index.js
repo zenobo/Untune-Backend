@@ -1,5 +1,5 @@
-const Youtube = require('./youtube')
-const { MAX_SUBREDDITS } = require('../data/constants')
+const Youtube = require('../youtube');
+const { MAX_SUBREDDITS } = require('../../data/constants');
 
 const Controller = {
   /**
@@ -32,7 +32,7 @@ const Controller = {
     redisClient.getClient().set(
       subreddit, JSON.stringify({
         url: `https://www.youtube.com/watch?v=${posts[0].youtubeId}&list=${playlist_id}`,
-        posts: posts
+        posts: posts,
       })
     )
   }

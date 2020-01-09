@@ -1,5 +1,5 @@
-const axios = require('axios')
-const { SUBREDDITS } = require('../data/constants')
+const axios = require('axios');
+const { SUBREDDITS } = require('../../data/constants');
 const getYouTubeID = require('get-youtube-id');
 
 const Reddit = {
@@ -9,7 +9,7 @@ const Reddit = {
   **/
   loadPosts: async (subreddit) => {
     let entries = [];
-    const response = await axios.get(`https://www.reddit.com/r/${subreddit}/hot/.json?count=30`)
+    const response = await axios.get(`https://www.reddit.com/r/${subreddit}/hot/.json?count=30`);
     return Reddit.parseIds(response);
   },
   /**

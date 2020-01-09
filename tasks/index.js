@@ -1,8 +1,8 @@
-const Reddit = require('../services/reddit')
+const Reddit = require('../services/reddit');
 const {google} = require('googleapis');
-const { PLAYLIST_DELAY } = require('../data/constants')
-const Youtube = require('../services/youtube')
-const Controller = require('../services/controller')
+const { PLAYLIST_DELAY } = require('../data/constants');
+const Youtube = require('../services/youtube');
+const Controller = require('../services/controller');
 
 const Tasks = {
   /**
@@ -17,7 +17,7 @@ const Tasks = {
     // Create youtube service
     const service = google.youtube({
       version: 'v3',
-      auth: auth
+      auth: auth,
     });
 
     // Get list of subreddits
@@ -32,15 +32,15 @@ const Tasks = {
 
         // Load reddit posts
         posts = await Reddit.loadPosts(subreddit.name);
-        console.log(posts)
+        console.log(posts);
 
         // Save posts and playlist URL in memory
-        Controller.setCache(posts, playlist_id, redisClient, subreddit.name)
+        Controller.setCache(posts, playlist_id, redisClient, subreddit.name);
 
         // Map reddit posts
         await Controller.insertPlaylistItems(service, playlist_id, posts);
 
-      }, PLAYLIST_DELAY*index)
+      }, PLAYLIST_DELAY*index);
     })
 
   }
