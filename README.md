@@ -9,7 +9,7 @@ The API is responsible for creating new playlists daily through the Youtube API.
 - [Youtube API](#youtube-api)
 
 ## Overview
-The components of Untune are the [Untune.io](https://github.com/zenobo/Untune.io) and the [Untune Chrome Extension](https://github.com/zenobo/Untune-Extension).
+The components of Untune are [Untune.io](https://github.com/zenobo/Untune.io) and the [Untune Chrome Extension](https://github.com/zenobo/Untune-Extension).
 
 ## Getting Started
 Start a redis server
