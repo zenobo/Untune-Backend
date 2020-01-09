@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { SUBREDDITS } = require('../data/constants');
+const { SUBREDDITS } = require('../../data/constants');
 const getYouTubeID = require('get-youtube-id');
 
 const Reddit = {

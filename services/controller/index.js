@@ -1,5 +1,5 @@
-const Youtube = require('./youtube');
-const { MAX_SUBREDDITS } = require('../data/constants');
+const Youtube = require('../youtube');
+const { MAX_SUBREDDITS } = require('../../data/constants');
 
 const Controller = {
   /**
