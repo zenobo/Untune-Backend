@@ -43,3 +43,24 @@ Visit the [Google Cloud Console](https://console.developers.google.com/apis/api/
 
 #### Auth with Youtube account
 Start the app and load the /update GET endpoint. You will be promoted to authorize an account through a google url. Follow the oauth screen and submit the auth code to the /setToken POST endpoint. Loading /update again will start the playlist create task.
+
+#### GET /update
+Triggers the create playlists task.
+
+#### GET /subreddit
+Return the playlist URL and a list of posts.
+
+#### getAuthUrl
+Get the oAuth URL to link a youtube account.
+
+| Param  | Description |
+| ------------- | ------------- |
+| key  | optional - match against an env variable called PROTECTED |
+
+#### setToken
+Set an oAuth token, used after authorizing with /getAuthUrl.
+
+| Param  | Description |
+| ------------- | ------------- |
+| key  | optional - match against an env variable called PROTECTED |
+| code | auth code submit to youtube
