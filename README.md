@@ -50,6 +50,10 @@ Triggers the create playlists task.
 #### GET /subreddit
 Return the playlist URL and a list of posts.
 
+| Param  | Description |
+| ------------- | ------------- |
+| name  | the subreddit name to query from cache |
+
 #### getAuthUrl
 Get the oAuth URL to link a youtube account.
 
